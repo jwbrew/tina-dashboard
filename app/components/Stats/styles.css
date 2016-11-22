@@ -1,0 +1,27 @@
+.root {
+  margin: 1em;
+}
+
+.root h1 {
+  text-align: center;
+  margin-bottom: 0.5em;
+  margin-top: 3em;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel {
+  composes: panel from "../Shared.css";
+  margin: 1em;
+}
+
+.hero {
+  font-size: 60px;
+  display: block;
+  text-align: center;
+}

@@ -1,0 +1,27 @@
+/*.menu > ul > span {
+  display: flex;
+  flex-direction: column-reverse;
+}*/
+
+
+.root + .root {
+  border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.conversation {
+  padding: 1.5em 2em;
+  border-left: 3px grey solid;
+}
+
+.conversation:hover, .active .conversation {
+  background-color: rgba(128,128,128,0.07);
+}
+
+.open {
+  border-color: #FF217B;
+}

@@ -1,0 +1,58 @@
+.root {
+  background-color: #f2f2f2;
+  box-shadow: 0 0 3px 0 rgba(0,0,0,0.5);
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.root ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.root li {
+  position: relative;
+}
+
+.root svg {
+  width: 40px;
+  height: 40px;
+}
+
+.root svg {
+  fill: grey;
+}
+
+.root li + li {
+  margin-top: 20px;
+}
+
+.top img {
+  margin-bottom: 2em;
+  width: 40px;
+}
+
+.bottom {
+  margin-top: auto;
+}
+
+.active svg {
+  fill: #9C5A74;
+}
+
+.badge {
+  background-color: #FF217B;
+  padding: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 13px;
+  font-size: 12px;
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  color: white;
+}
