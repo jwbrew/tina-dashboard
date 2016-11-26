@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import styles from './styles.css';
 import FormattedText from 'formatted-text';
 
-const Settings = ({ userProfile }) => {
+const Settings = ({ userProfile, isEditing, startEditing }) => {
   const meta = userProfile.user_metadata
 
   return (
       <div className={styles.root}>
-        <h1>Settings</h1>
+        <h1>Settings</h1><a onClick={startEditing}>edit</a>
         <div className={styles.content}>
           <div className={styles.panel}>
             <h2>Profile</h2>
@@ -25,13 +25,21 @@ const Settings = ({ userProfile }) => {
             <h2>Widget</h2>
             <dl>
               <dt>Welcome Message</dt>
-              <dd><FormattedText>{meta.welcome}</FormattedText></dd>
-              <dt>Payment Details</dt>
-              <dd><FormattedText>{meta.payment}</FormattedText></dd>
-              <dt>Chat Intro</dt>
-              <dd><FormattedText>{meta.chat}</FormattedText></dd>
-              <dt>Thank You Message</dt>
-              <dd><FormattedText>{meta.thanks}</FormattedText></dd>
+              <dd>
+                {!isEditing && <FormattedText>{meta.welcome}</FormattedText>}
+                {isEditing && <textarea value={meta.welcome}></textarea>}
+              </dd>
+              <dt>Auto Open</dt>
+              <dd>
+                {!isEditing &&
+                  <span>{meta.auto_open ? 'Enabled' : 'Disabled'}</span> }
+                { isEditing &&
+                  <select>
+                    <option value='true'>Enabled</option>
+                    <option value='false'>Disabled</option>
+                  </select>
+                }
+              </dd>
             </dl>
           </div>
         </div>

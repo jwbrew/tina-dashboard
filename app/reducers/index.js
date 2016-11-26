@@ -3,8 +3,15 @@ import { combineReducers } from 'redux';
 import auth, * as fromAuth from './auth';
 import conversations, * as fromConversations from './conversations';
 import messages, * as fromMessages from './messages';
+import settings from './settings';
 
-const appReducers = combineReducers({ routing, auth, conversations, messages })
+const appReducers = combineReducers({
+  routing,
+  auth,
+  conversations,
+  messages,
+  settings
+})
 
 export default (state, action) => {
   if (action.type === 'LOGOUT') {

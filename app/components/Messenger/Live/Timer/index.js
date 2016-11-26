@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import styles from './styles.css'
+
+const GLOBAL = typeof window === 'undefined' ? global : window;
 
 class Timer extends Component {
 
   constructor (props) {
     super(props)
-    this.state = { duration: 0 }
+    this.state = {
+      startTime: new Date().getTime(),
+      duration: 0
+    }
     this.tick = this.tick.bind(this)
   }
 
@@ -13,26 +19,16 @@ class Timer extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.ended_at) {
-      this.setState({ duration: props.ended_at - props.started_at })
-      clearInterval(this.timer)
-    } else if (props.started_at) {
-      this.timer = setInterval(this.tick, 1000)
-    } else {
-      this.setState({ duration: 0 })
-    }
+    this.timer = setInterval(this.tick, 1000)
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer)
+    console.log('Timer componentWillUnmount');
+    GLOBAL.clearInterval(this.timer)
   }
 
   tick () {
-    if (this.props.ended_at) {
-      this.setState({ duration: this.props.ended_at - this.props.started_at })
-      return
-    }
-    this.setState({ duration: new Date().getTime() - this.props.started_at })
+    this.setState({ duration: new Date().getTime() - this.state.startTime })
   }
 
   formatDuration(mSec) {
@@ -46,7 +42,7 @@ class Timer extends Component {
 
   render() {
     return (
-      <span className={this.props.className}>{ this.formatDuration(this.state.duration) }</span>
+      <span className={styles.root}>{ this.formatDuration(this.state.duration) }</span>
     )
   }
 }

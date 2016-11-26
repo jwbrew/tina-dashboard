@@ -25,7 +25,10 @@ class Auth extends Component {
   }
 
   render() {
-    if (!this.props.isAuthenticated) {
+    if (
+      !this.props.isAuthenticated ||
+      isTokenExpired(this.props.token)
+    ) {
       return null
     }
     return(<App {...this.props} />)

@@ -84,7 +84,7 @@ export const getConversationsSorted = (state) => {
 }
 
 export const getActiveConversation = (state, id) => {
-   return state, withUnread(withPrice(state.byId[id]))
+   return withUnread(withPrice(state.byId[id]))
 }
 
 const withPrice = (c) => {

@@ -75,3 +75,9 @@
 .date {
   margin-right: 1em;
 }
+
+p.text {
+  color: white;
+  font-size: 0.8em;
+  margin: 0 20px 10px;
+}

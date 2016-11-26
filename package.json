@@ -58,6 +58,7 @@
     "react-svg": "^1.1.5",
     "react-test-renderer": "15.3.2",
     "react-timer": "^1.0.1",
+    "react-timer-mixin": "^0.13.3",
     "react.timer": "^2.1.0",
     "redux": "^3.6.0",
     "redux-analytics": "^0.3.1",
@@ -72,6 +73,7 @@
     "uuid": "^3.0.0",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
+    "webrtc-adapter": "^2.0.8",
     "whatwg-fetch": "^1.0.0"
   }
 }

@@ -1,0 +1,17 @@
+.root {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2em;
+  margin: 0.2em 0.4em;
+  fill: green;
+}
+
+.root > a > svg {
+  fill: red;
+}
+
+.link {
+  cursor: pointer;
+  display: block;
+}
