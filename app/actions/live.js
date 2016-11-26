@@ -6,7 +6,7 @@ export function liveCallStarted() {
     },
     meta: {
       analytics: {
-        type: 'live-started'
+        type: 'live-call-started'
       }
     }
   }
@@ -20,21 +20,21 @@ export function liveCallAnswered() {
     },
     meta: {
       analytics: {
-        type: 'live-started'
+        type: 'live-call-answered'
       }
     }
   }
 }
 
-export function liveEnd() {
+export function liveCallEnded() {
   return {
-    type: 'LIVE_ENDED',
+    type: 'LIVE_CALL_ENDED',
     payload: {
       time: new Date().getTime()
     },
     meta: {
       analytics: {
-        type: 'live-ended'
+        type: 'live-call-ended'
       }
     }
   }

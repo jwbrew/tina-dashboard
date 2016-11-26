@@ -4,6 +4,7 @@ import Component from './component';
 import {
   getActiveConversation,
 } from '../../reducers';
+import { track } from '../../utils/analytics';
 
 navigator.getUserMedia = navigator.getUserMedia ||
     navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
@@ -17,6 +18,7 @@ class Messenger extends React.Component {
 
   toggleLive = () => {
     this.setState((prev) => {
+      track(prev.liveOpen ? 'live-closed' : 'live-opened')
       return {
         liveOpen: !prev.liveOpen
       }

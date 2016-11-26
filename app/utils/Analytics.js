@@ -10,9 +10,9 @@ ReactGA.initialize(Config.GA_ID, {
 });
 
 
-export function track(category, action) {
+export function track(action) {
   return ReactGA.event({
-    category,
+    category: 'dashboard',
     action,
     label: window.location.href,
   });

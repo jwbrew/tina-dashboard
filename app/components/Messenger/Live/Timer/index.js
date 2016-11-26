@@ -23,7 +23,6 @@ class Timer extends Component {
   }
 
   componentWillUnmount() {
-    console.log('Timer componentWillUnmount');
     GLOBAL.clearInterval(this.timer)
   }
 

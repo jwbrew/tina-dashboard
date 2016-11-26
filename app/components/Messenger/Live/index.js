@@ -7,7 +7,7 @@ import {
 import {
   liveCallStarted,
   liveCallAnswered,
-  liveEnd
+  liveCallEnded
 } from '../../../actions/live';
 import pusher from '../../../utils/Pusher';
 require('webrtc-adapter');
@@ -225,6 +225,7 @@ class Live extends React.Component {
 
   hangup = () => {
     debug('hangup');
+    this.props.liveCallEnded()
     this.stop();
     this.sendMessage('end');
   }
@@ -279,8 +280,6 @@ class Live extends React.Component {
   }
 
   stop = () => {
-    pc.close()
-    this.props.liveEnd()
     pc = null
     debug(this.state);
     this.setState({
@@ -318,5 +317,5 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, {
   liveCallStarted,
   liveCallAnswered,
-  liveEnd
+  liveCallEnded
 })(Live);
