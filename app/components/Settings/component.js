@@ -1,13 +1,40 @@
 import React, { Component } from 'react';
 import styles from './styles.css';
 import FormattedText from 'formatted-text';
+import EditIcon from './assets/edit.svg';
+import SaveIcon from './assets/save.svg';
+import CancelIcon from './assets/cancel.svg';
+import { ChromePicker } from 'react-color';
+import Loader from '../Loader';
 
-const Settings = ({ userProfile, isEditing, startEditing }) => {
+
+const Settings = ({
+  userProfile,
+  isEditing,
+  startEditing,
+  saveEditing,
+  cancelEditing,
+  isSaving,
+  auth,
+  form,
+  updateForm
+}) => {
   const meta = userProfile.user_metadata
+  const onChange = (field) => (event) => {
+    console.log(event);
+    return updateForm(field, event.hex || event.target.value)
+  }
 
   return (
       <div className={styles.root}>
-        <h1>Settings</h1><a onClick={startEditing}>edit</a>
+        { isSaving && <Loader /> }
+        <h1>Settings
+          <div className={styles.controls}>
+            { !isEditing && <EditIcon onClick={startEditing} /> }
+            { isEditing && <SaveIcon onClick={() => saveEditing(auth, userProfile, form)} /> }
+            { isEditing && <CancelIcon onClick={cancelEditing} /> }
+          </div>
+        </h1>
         <div className={styles.content}>
           <div className={styles.panel}>
             <h2>Profile</h2>
@@ -23,22 +50,42 @@ const Settings = ({ userProfile, isEditing, startEditing }) => {
           </div>
           <div className={styles.panel}>
             <h2>Widget</h2>
-            <dl>
-              <dt>Welcome Message</dt>
+            <dl className={styles.dl}>
+              <dt className={styles.dt}>Welcome Message</dt>
               <dd>
-                {!isEditing && <FormattedText>{meta.welcome}</FormattedText>}
-                {isEditing && <textarea value={meta.welcome}></textarea>}
+                { !isEditing && <FormattedText className={styles.formatted}>{meta.welcome}</FormattedText> }
+                { isEditing && <textarea
+                  className={styles.textarea}
+                  onChange={onChange('welcome')}
+                  value={form.welcome}></textarea> }
               </dd>
-              <dt>Auto Open</dt>
+              <dt className={styles.dt}>Auto Open</dt>
               <dd>
-                {!isEditing &&
+                { !isEditing &&
                   <span>{meta.auto_open ? 'Enabled' : 'Disabled'}</span> }
                 { isEditing &&
-                  <select>
+                  <select
+                    value={form.auto_open}
+                    onChange={onChange('auto_open')}
+                    >
                     <option value='true'>Enabled</option>
                     <option value='false'>Disabled</option>
                   </select>
                 }
+              </dd>
+              <dt className={styles.dt}>Primary Colour</dt>
+              <dd>
+                { !isEditing && <span
+                  className={styles.primary}
+                  style={{
+                    backgroundColor: meta.primary_colour || '#a7798e',
+                  }}>
+                  { meta.primary_colour || '#a7798e' }
+                </span>}
+                { isEditing && <ChromePicker
+                  color={form.primary_colour}
+                  onChangeComplete={onChange('primary_colour')}
+                  /> }
               </dd>
             </dl>
           </div>

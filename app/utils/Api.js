@@ -82,6 +82,15 @@ export default function(token) {
       .then(normalizeResponse(conversation))
   }
 
+  api.updateUser = ({ user_id }, user_metadata) => {
+    var user = api
+      .custom(`https://${Config.AUTH0_DOMAIN}/api/v2`, false)
+      .one('users', user_id)
+    return user.patch({ user_metadata }).then((response) => {
+      return response.body().data()
+    })
+  }
+
   return api
 };
 // export default restful('https://xqdw0lhxt8.execute-api.eu-west-1.amazonaws.com/dev', fetchBackend(fetch));

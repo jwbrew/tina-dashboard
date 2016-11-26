@@ -1,13 +1,26 @@
 import { connect } from 'react-redux';
 import Component from './component';
 import { getUserProfile } from '../../reducers';
-import { startEditing } from '../../actions/settings';
+import {
+  startEditing,
+  cancelEditing,
+  saveEditing,
+  updateForm
+} from '../../actions/settings';
 
 const mapStateToProps = (state) => {
   return {
     isEditing: state.settings.isEditing,
-    userProfile: getUserProfile(state)
+    auth: state.auth,
+    isSaving: state.settings.isSaving,
+    userProfile: getUserProfile(state),
+    form: state.settings.form
   }
 }
 
-export default connect(mapStateToProps, {startEditing})(Component);
+export default connect(mapStateToProps, {
+  startEditing,
+  cancelEditing,
+  saveEditing,
+  updateForm
+})(Component);

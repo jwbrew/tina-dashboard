@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 const userProfile = (state=null, action) => {
   switch (action.type) {
     case 'LOCK_SUCCESS':
+    case 'SETTINGS_SAVE_SUCCESS':
       return {
         ...state,
         ...action.profile
@@ -24,13 +25,18 @@ function auth(state = {
     token: null
   }, action) {
   switch (action.type) {
+    case 'SETTINGS_SAVE_SUCCESS':
+      return {
+        ...state,
+        userProfile: userProfile(state.userProfile, action)
+      }
     case 'LOCK_SUCCESS':
       return {
         ...state,
         isFetching: false,
         isAuthenticated: true,
         errorMessage: '',
-        userProfile: userProfile(undefined, action),
+        userProfile: userProfile(state.userProfile, action),
         token: action.token
       }
     case 'LOGOUT':

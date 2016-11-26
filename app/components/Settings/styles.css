@@ -41,3 +41,37 @@
 .rows > .panel + .panel {
   margin-top: 1em;
 }
+
+.controls {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.controls > svg {
+  height: 20px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.formatted {
+  text-align: center;
+}
+
+.textarea {
+  font-family: 'Lato';
+  font-size: 1em;
+  border-color: #e2e2e2;
+  width: 30em;
+  height: 15em;
+  text-align: center;
+}
+
+.dt {
+  margin: 1.5em 0 0.7em;
+}
+
+.primary {
+  padding: 10px;
+  color: white;
+  display: inline-block;
+}
