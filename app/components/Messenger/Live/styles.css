@@ -2,6 +2,8 @@
   position: absolute;
   height: 100%;
   width: 100%;
+  top: 0;
+  left: 0;
   display: flex;
   background-color: black;
   justify-content: center;
@@ -22,7 +24,10 @@
 
 .remoteVideo {
   object-fit: cover;
+  height: 100%;
   width: 100%;
+  top: 0;
+  left: 0;
   position: absolute;
 }
 
