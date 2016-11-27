@@ -8,6 +8,7 @@ import CardIcon from './assets/payments.svg';
 import GearIcon from './assets/settings.svg';
 import InfoIcon from './assets/info.svg';
 import PowerIcon from './assets/power.svg';
+import AccountIcon from './assets/payments.svg';
 
 const Menu = ({ isAuthenticated, login, logout, activeConversationCount, isAdmin }) => {
 
@@ -30,6 +31,7 @@ const Menu = ({ isAuthenticated, login, logout, activeConversationCount, isAdmin
       </div>
       <div className={styles.bottom}>
         <ul>
+          { !isAdmin && <li><Link to="/account" activeClassName={styles.active}><AccountIcon/></Link></li> }
           { !isAdmin && <li><Link to="/installation" activeClassName={styles.active}><InfoIcon/></Link></li> }
           { !isAdmin && <li><Link to="/settings" activeClassName={styles.active}><GearIcon/></Link></li> }
           <li><a href='#'

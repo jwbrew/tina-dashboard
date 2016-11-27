@@ -6,6 +6,7 @@ import Menu from '../Menu';
 import Stats from '../Stats';
 import Conversations from '../Conversations';
 import Conversation from '../Conversation';
+import Account from '../Account';
 import Installation from '../Installation';
 import Settings from '../Settings';
 
@@ -34,6 +35,7 @@ const Dashboard = () => {
         <Route path="conversations" component={Conversations}>
           <Route path="/conversations/:conversationId" component={Conversation}/>
         </Route>
+        <Route path="account" component={Account} />
         <Route path="installation" component={Installation} />
         <Route path="settings" component={Settings} />
       </Route>

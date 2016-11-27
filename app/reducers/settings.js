@@ -35,9 +35,9 @@ function settings(state = {
     case 'SETTINGS_SAVE_SUCCESS':
       return {
         ...state,
-        isEditing: false
+        isEditing: false,
+        isSaving: false
       }
-    case 'SETTINGS_SAVE_SUCCESS':
     case 'SETTINGS_SAVE_FAILURE':
       return {
         ...state,

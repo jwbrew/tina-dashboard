@@ -4,6 +4,7 @@ const userProfile = (state=null, action) => {
   switch (action.type) {
     case 'LOCK_SUCCESS':
     case 'SETTINGS_SAVE_SUCCESS':
+    case 'CLIENT_SUBSCRIPTION_SUCCESS':
       return {
         ...state,
         ...action.profile
@@ -25,10 +26,21 @@ function auth(state = {
     token: null
   }, action) {
   switch (action.type) {
-    case 'SETTINGS_SAVE_SUCCESS':
+    case 'CLIENT_SUBSCRIPTION_REQUEST':
       return {
         ...state,
+        isFetching: true
+      }
+    case 'CLIENT_SUBSCRIPTION_SUCCESS':
+      return {
+        ...state,
+        isFetching: false,
         userProfile: userProfile(state.userProfile, action)
+      }
+    case 'CLIENT_SUBSCRIPTION_FAILURE':
+      return {
+        ...state,
+        isFetching: false
       }
     case 'LOCK_SUCCESS':
       return {

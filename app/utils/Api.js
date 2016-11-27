@@ -4,6 +4,7 @@ import Config from './Config';
 var api = restful(Config.API_ENDPOINT, fetchBackend(fetch));
 import { normalize } from 'normalizr';
 import {
+  client,
   conversation,
   conversations,
   message,
@@ -89,6 +90,18 @@ export default function(token) {
     return user.patch({ user_metadata }).then((response) => {
       return response.body().data()
     })
+  }
+
+  api.subscribeClient = ({ user_id, user_metadata }, plan, token) => {
+    return api.all('clients')
+      .custom('subscribe')
+      .post({
+        stripe_customer_id: user_metadata.stripe_customer_id,
+        token,
+        client_id: user_id,
+        plan
+      })
+      .then((r) => r.body().data())
   }
 
   return api

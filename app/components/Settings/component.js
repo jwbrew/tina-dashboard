@@ -21,7 +21,6 @@ const Settings = ({
 }) => {
   const meta = userProfile.user_metadata
   const onChange = (field) => (event) => {
-    console.log(event);
     return updateForm(field, event.hex || event.target.value)
   }
 
@@ -65,7 +64,7 @@ const Settings = ({
                   <span>{meta.auto_open ? 'Enabled' : 'Disabled'}</span> }
                 { isEditing &&
                   <select
-                    value={form.auto_open}
+                    value={!!form.auto_open}
                     onChange={onChange('auto_open')}
                     >
                     <option value='true'>Enabled</option>
