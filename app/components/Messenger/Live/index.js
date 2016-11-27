@@ -80,8 +80,8 @@ class Live extends React.Component {
       });
       pc.addIceCandidate(candidate);
     })
-    this.pusher.bind('client-end', (message) => {
-      debug('RECEIVE MESSAGE end', message, this.state.isStarted);
+    this.pusher.bind('client-hangup', (message) => {
+      debug('RECEIVE MESSAGE hangup', message, this.state.isStarted);
       if (!this.state.isStarted) return
       this.handleRemoteHangup()
     })
@@ -100,8 +100,9 @@ class Live extends React.Component {
 
   componentWillUnmount() {
     debug('componentWillUnmount');
+    this.channel.unsubscribe()
     this.state.localStream.getTracks().forEach((t) => t.stop())
-    this.stop()
+    // this.stop()
   }
 
   init(props) {
@@ -176,6 +177,7 @@ class Live extends React.Component {
   }
 
   handleConnectionStateChange = (event) => {
+    debug('handleConnectionStateChange', event, pc.iceConnectionState)
     if (pc && pc.iceConnectionState == 'disconnected') {
         this.handleRemoteStreamRemoved()
     }
@@ -227,7 +229,7 @@ class Live extends React.Component {
     debug('hangup');
     this.props.liveCallEnded()
     this.stop();
-    this.sendMessage('end');
+    this.sendMessage('hangup');
   }
 
   maybeStart = () => {
@@ -280,7 +282,7 @@ class Live extends React.Component {
   }
 
   stop = () => {
-    pc = null
+    pc.close()
     debug(this.state);
     this.setState({
       remoteStream: null,
