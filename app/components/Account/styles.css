@@ -1,0 +1,10 @@
+.root {
+  padding: 2em;
+  height: 100%;
+  position: relative;
+}
+
+.tiers {
+  display: flex;
+  justify-content: center;
+}
