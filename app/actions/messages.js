@@ -56,7 +56,12 @@ function createMessage(message, conversation) {
     api.sendMessage(message, conversation).then((payload) => {
       dispatch({
         type: 'MESSAGE_SEND_SUCCESS',
-        payload
+        payload,
+        meta: {
+          analytics: {
+            type: 'message-sent'
+          }
+        }
       })
     }).catch((error) => {
       dispatch({
