@@ -61,10 +61,10 @@ const Settings = ({
               <dt className={styles.dt}>Auto Open</dt>
               <dd>
                 { !isEditing &&
-                  <span>{meta.auto_open ? 'Enabled' : 'Disabled'}</span> }
+                  <span>{meta.auto_open === 'true' ? 'Enabled' : 'Disabled'}</span> }
                 { isEditing &&
                   <select
-                    value={!!form.auto_open}
+                    value={form.auto_open}
                     onChange={onChange('auto_open')}
                     >
                     <option value='true'>Enabled</option>
