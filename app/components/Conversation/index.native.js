@@ -1,8 +1,27 @@
+import React from 'react';
+import { BackAndroid } from 'react-native';
 import Container from './container';
 import { connect } from 'react-redux';
 import { getActiveConversation } from '../../reducers';
 import { conversationSuccess } from '../../actions/conversations';
 import { messageSuccess } from '../../actions/messages';
+
+class Conversation extends React.Component {
+  componentDidMount() {
+    var navigator = this.props.navigator
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if (navigator && navigator.getCurrentRoutes().length > 1) {
+          navigator.pop();
+          return true;
+      }
+      return false;
+    });
+  }
+
+  render() {
+    return (<Container {...this.props} />)
+  }
+}
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -13,4 +32,4 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, {
   conversationSuccess,
   messageSuccess
-})(Container);
+})(Conversation);
