@@ -4,7 +4,7 @@ import Component from './component';
 import {
   getActiveConversation,
 } from '../../reducers';
-import { track } from '../../utils/analytics';
+import { track } from '../../utils/Analytics';
 
 navigator.getUserMedia = navigator.getUserMedia ||
     navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
