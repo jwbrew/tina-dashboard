@@ -12,8 +12,8 @@ class Auth extends Component {
     loadConversations: PropTypes.func
   };
 
-  componentDidMount() {
-    this.checkAuth(this.props)
+  componentWillReceiveProps(props) {
+    if (props.isHydrated) this.checkAuth(props)
   }
 
   checkAuth(props) {
@@ -38,7 +38,8 @@ class Auth extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     isAuthenticated: isAuthenticated(state),
-    token: authToken(state)
+    token: authToken(state),
+    isHydrated: state.hydration.isHydrated
   }
 }
 

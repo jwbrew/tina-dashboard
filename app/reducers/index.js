@@ -5,10 +5,20 @@ import conversations, * as fromConversations from './conversations';
 import messages, * as fromMessages from './messages';
 import settings from './settings';
 
+const hydration = (state={isHydrated: false}, action) => {
+  if (action.type === 'persist/REHYDRATE') {
+    return {
+      isHydrated: true
+    }
+  }
+  return state
+}
+
 const appReducers = combineReducers({
   routing,
   auth,
   conversations,
+  hydration,
   messages,
   settings
 })
