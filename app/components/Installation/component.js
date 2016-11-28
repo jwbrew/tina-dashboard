@@ -37,13 +37,11 @@ const Installation = ({ userProfile }) => {
         <div className={styles.panel}>
           <h2>Squarespace</h2>
           <p>
-            Follow
-            <a
+            Follow <a
               href="https://support.squarespace.com/hc/en-us/articles/205815908-Using-Code-Injection"
               target="_new">
               these instructions
-            </a>
-            for code injection to add the following snippet to your Squarespace website:
+            </a> for code injection to add the following snippet to your Squarespace website:
           </p>
           <code>{`<script
               type=\"text/javascript\"
