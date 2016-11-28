@@ -39,7 +39,12 @@ export function sendMessage(message, conversation, clientId) {
       api.createConversation(clientId).then((payload) => {
         dispatch({
           type: 'CREATE_CONVERSATION_SUCCESS',
-          payload
+          payload,
+          meta: {
+            analytics: {
+              type: 'conversation-started'
+            }
+          }
         })
         const conversation = payload.entities.conversations[payload.result]
         dispatch(createMessage(message, conversation))
