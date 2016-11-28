@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import Text from '../Text';
 import Panel from '../Panel';
 import Messenger from '../Messenger';
@@ -13,7 +13,7 @@ export default Conversation = ({ id }) => {
       backgroundColor: 'white'
     }}>
       <Messenger conversationId={id} />
-      <KeyboardSpacer />
+      { (Platform.OS === 'ios') && <KeyboardSpacer /> }
     </View>
   )
 }
