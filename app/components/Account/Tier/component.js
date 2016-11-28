@@ -56,8 +56,8 @@ const Component = ({
               }
             }}
           >
-            { client.user_metadata.stripe_plan.amount > price * 100 && 'Downgrade'}
-            { client.user_metadata.stripe_plan.amount < price * 100 && 'Upgrade'}
+            { client.user_metadata.stripe_plan && client.user_metadata.stripe_plan.amount > price * 100 && 'Downgrade'}
+            { (!client.user_metadata.stripe_plan || client.user_metadata.stripe_plan.amount < price * 100) && 'Upgrade'}
           </button>
         }
       </div>
