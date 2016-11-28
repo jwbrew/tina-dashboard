@@ -31,6 +31,7 @@ function auth(state = {
         ...state,
         isFetching: true
       }
+    case 'SETTINGS_SAVE_SUCCESS':
     case 'CLIENT_SUBSCRIPTION_SUCCESS':
       return {
         ...state,
