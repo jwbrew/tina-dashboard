@@ -10,7 +10,7 @@ const App = ({ isAuthenticated }) => {
         initialRoute={{ title: 'Conversations', index: 0 }}
         renderScene={(route, navigator) => {
           if (!route.id) return <Conversations navigator={navigator} />
-          return <Conversation id={route.id} />
+          return <Conversation navigator={navigator} id={route.id} />
         }}
       />
     </View>
