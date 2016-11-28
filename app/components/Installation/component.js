@@ -7,6 +7,16 @@ const Installation = ({ userProfile }) => {
       <h1>Installation</h1>
       <div className={styles.rows}>
         <div className={styles.panel}>
+          <h2>Direct Link</h2>
+          <p>
+            Send visitors to <a
+              href={ `https://asktina.io/chat${userProfile.user_metadata.slug}` }
+              target="_new">
+              { `https://asktina.io/chat#${userProfile.user_metadata.slug}` }
+            </a> for a coding-free chat window.
+          </p>
+        </div>
+        <div className={styles.panel}>
           <h2>HTML Code</h2>
           <p>Embded this code snippet directly before the closing <code>{"</body>"}</code> tag.</p>
           <code>{`<script
