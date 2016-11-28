@@ -32,6 +32,13 @@ export function login() {
   const lock = new Auth0Lock(Config.AUTH0_CLIENT_ID, Config.AUTH0_DOMAIN, {
     auth: {
       redirect: false
+    },
+    theme: {
+      logo: 'https://asktina.io/assets/img/logo.png',
+      primaryColor: '#a7798e'
+    },
+    languageDictionary: {
+      title: "Authentication"
     }
   });
   return dispatch => {
