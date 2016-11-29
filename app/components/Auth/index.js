@@ -17,10 +17,8 @@ class Auth extends Component {
   }
 
   checkAuth(props) {
-    if (!props.isAuthenticated) {
+    if (!props.isAuthenticated || isTokenExpired(props.token)) {
       props.login()
-    } else if (isTokenExpired(props.token)) {
-      props.logout()
     }
   }
 

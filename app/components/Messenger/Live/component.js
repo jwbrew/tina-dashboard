@@ -4,25 +4,38 @@ import styles from './styles.css';
 import AnswerIcon from './assets/answer.svg';
 import CallIcon from './assets/call.svg';
 import EndIcon from './assets/hangup.svg';
+import OpenIcon from './assets/open.svg';
+import CloseIcon from './assets/close.svg';
+
 
 import Timer from './Timer';
 import Stream from './Stream';
 
 
 const Live = ({
+  close,
   conversation,
   doAnswer,
   endCall,
   hasAnswered,
   hasOffer,
+  isOpen,
   isStarted,
   liveWelcome,
   localStream,
+  open,
   remoteStream,
   startCall
 }) => {
   return (
-    <div className={styles.root}>
+    <div
+      className={styles.root}
+      style={{
+        transform: isOpen ? 'none' : 'translateX(100%)'
+      }}
+    >
+    <OpenIcon className={styles.open} onClick={open} />
+    <CloseIcon className={styles.close} onClick={close} />
       { remoteStream &&
         <Stream
           className={styles.remoteVideo}
