@@ -10,7 +10,7 @@ const Installation = ({ userProfile }) => {
           <h2>Direct Link</h2>
           <p>
             Send visitors to <a
-              href={ `https://asktina.io/chat${userProfile.user_metadata.slug}` }
+              href={ `https://asktina.io/chat#${userProfile.user_metadata.slug}` }
               target="_new">
               { `https://asktina.io/chat#${userProfile.user_metadata.slug}` }
             </a> for a coding-free chat window.
