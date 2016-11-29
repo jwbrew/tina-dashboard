@@ -1,16 +1,21 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-// import api from '../middleware/api'
 import rootReducer from '../reducers'
+import { persistStore, autoRehydrate } from 'redux-persist'
 import analytics from 'redux-analytics';
 import { track } from '../utils/Analytics';
 
 const analyticsMiddleware = analytics((payload) => track(payload.type))
+const configureStore = storage => {
 
-const configureStore = preloadedState => createStore(
-  rootReducer,
-  preloadedState,
-  applyMiddleware(thunk, analyticsMiddleware)
-)
+  const store = compose(autoRehydrate(), applyMiddleware(
+    thunk,
+    analyticsMiddleware
+  ))(createStore)(rootReducer);
+
+  persistStore(store, { storage: storage })
+
+  return store
+}
 
 export default configureStore
