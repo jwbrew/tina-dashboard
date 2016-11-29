@@ -19,6 +19,7 @@ const Live = ({
   endCall,
   hasAnswered,
   hasOffer,
+  isInitiator,
   isOpen,
   isStarted,
   liveWelcome,
@@ -43,7 +44,7 @@ const Live = ({
         />
       }
       { hasAnswered && <Timer /> }
-      { isStarted && !remoteStream &&
+      { isStarted && !remoteStream && isInitiator &&
         <p className={styles.text}>Calling...</p>
       }
       { !isStarted &&

@@ -12,7 +12,8 @@ import {
 import pusher from '../../../utils/Pusher';
 require('webrtc-adapter');
 
-const debug = console.log
+const debug = () => {}
+// const debug = console.log
 
 var pc
 
@@ -64,8 +65,7 @@ class Live extends React.Component {
   componentWillUnmount() {
     debug('componentWillUnmount');
     this.channel.unsubscribe()
-    this.state.localStream.getTracks().forEach((t) => t.stop())
-    // this.stop()
+    this.stop()
   }
 
   init(props) {
@@ -92,14 +92,15 @@ class Live extends React.Component {
   }
 
   createPeerConnection = () => {
-    debug('createPeerConnection');
-    if (pc) return
+    debug('createPeerConnection', pc);
+    if (pc && pc.iceConnectionState === 'open') return
     try {
       pc = new RTCPeerConnection(pcConfig);
       pc.onicecandidate = this.handleIceCandidate;
       pc.onaddstream = this.handleRemoteStreamAdded;
       pc.onremovestream = this.handleRemoteStreamRemoved;
       pc.oniceconnectionstatechange = this.handleConnectionStateChange;
+      debug('peerConnection created', pc)
     } catch (e) {
       debug('Cannot create RTCPeerConnection object.', e);
       return;
@@ -107,7 +108,7 @@ class Live extends React.Component {
   }
 
   getLocalStream = () => {
-    if (this.state.localStream) return
+    debug('getLocalStream', this.state.localStream);
     navigator.getUserMedia({
       audio: true,
       video: true
@@ -119,10 +120,11 @@ class Live extends React.Component {
   }
 
   gotLocalStream = (stream) => {
+    debug('gotLocalStream', stream);
     this.setState({
       localStream: stream
     }, () => {
-      pc.addStream(this.state.localStream)
+      pc.addStream(stream)
     });
   }
 
@@ -187,19 +189,24 @@ class Live extends React.Component {
   // UI
 
   open = () => {
-    this.setState({ isOpen: true }, this.getLocalStream)
+    this.getLocalStream()
+    // this.createPeerConnection()
+    this.setState({ isOpen: true })
   }
 
   close = () => {
+    this.state.localStream.getTracks().forEach((t) => t.stop())
     this.setState({
-      isOpen: false
+      isOpen: false,
+      localStream: null
     }, this.stop)
   }
-
 
   // Making the call
 
   doCall = () => {
+    debug('doCall', pc)
+    window.foo  = pc
     pc.createOffer(
       this.setLocalAndSendMessage,
       this.handleCreateOfferError
@@ -220,15 +227,20 @@ class Live extends React.Component {
   // Receiving the call
 
   doAnswer = () => {
-    debug('doAnswer');
+    debug('doAnswer', pc);
     this.props.liveCallAnswered()
+    debug('createAnswer')
+    pc.createAnswer().then(
+      this.onCreateSessionDescriptionSuccess,
+      this.onCreateSessionDescriptionError
+    );
+  }
+
+  onCreateSessionDescriptionSuccess = (sessionDescription) => {
+    this.setLocalAndSendMessage(sessionDescription)
     this.setState({
       hasAnswered: true
     })
-    pc.createAnswer().then(
-      this.setLocalAndSendMessage,
-      this.onCreateSessionDescriptionError
-    );
   }
 
   onCreateSessionDescriptionError(error) {
@@ -238,13 +250,16 @@ class Live extends React.Component {
   receiveAnswer = (message) => {
     debug('RECEIVE MESSAGE: answer', message);
     if (!this.state.isStarted) return
-    this.setState({
-      hasAnswered: true
-    }, () => {
-      pc.setRemoteDescription(
-        new RTCSessionDescription(message)
-      );
-    })
+    debug('receiveAnswer pc.setRemoteDescription', new RTCSessionDescription(message));
+    pc.setRemoteDescription(new RTCSessionDescription(message))
+      .then(() => {
+        debug('hasSetRemoteDescription', pc);
+        this.setState({
+          hasAnswered: true
+        })
+      }).catch((e) => {
+        debug('errorSettingRemoteDescription', e);
+      });
   }
 
   receiveCandidate = (message) => {
@@ -258,7 +273,7 @@ class Live extends React.Component {
   }
 
   receiveOffer = (message) => {
-    debug('RECEIVE MESSAGE: offer', message);
+    debug('RECEIVE MESSAGE: offer', message, this.state);
     this.setState({
       hasOffer: true
     }, () => {
@@ -266,11 +281,12 @@ class Live extends React.Component {
         !this.state.isInitiator &&
         !this.state.isStarted
       ) {
-        this.setState({ isStarted: true }, this.open)
+        this.open()
+        this.setState({ isStarted: true })
       }
     })
 
-    debug('pc.setRemoteDescription', new RTCSessionDescription(message));
+    debug('receiveOffer pc.setRemoteDescription', new RTCSessionDescription(message));
     pc.setRemoteDescription(
       new RTCSessionDescription(message)
     );
@@ -314,8 +330,13 @@ class Live extends React.Component {
   }
 
   stop = () => {
-    if (pc.iceConnectionState !== 'closed') pc.close()
-    debug(this.state);
+    debug('stop', pc, this.state)
+    if (pc.iceConnectionState != 'closed') {
+      pc.close()
+      this.createPeerConnection()
+      if (this.state.localStream) pc.addStream(this.state.localStream)
+    }
+
     this.setState({
       remoteStream: null,
       isStarted: false,
@@ -324,7 +345,6 @@ class Live extends React.Component {
       isInitiator: false
     })
   }
-
 
   render() {
     debug('RENDERING', this.state);
