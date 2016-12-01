@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import auth, * as fromAuth from './auth';
 import conversations, * as fromConversations from './conversations';
 import messages, * as fromMessages from './messages';
+import onboarding from './onboarding';
 import settings from './settings';
 
 const hydration = (state={isHydrated: false}, action) => {
@@ -20,6 +21,7 @@ const appReducers = combineReducers({
   conversations,
   hydration,
   messages,
+  onboarding,
   settings
 })
 

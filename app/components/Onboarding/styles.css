@@ -1,0 +1,38 @@
+.root {
+  height: 100%;
+  @import url(https://fonts.googleapis.com/css?family=Lato:300);
+  font-family: 'Lato', sans-serif;
+}
+
+.enter, .appear {
+  opacity: 0;
+}
+
+.enterActive, .appearActive {
+  opacity: 1;
+}
+
+.appearActive {
+  transition: all 2s ease-in-out;
+}
+
+.enterActive {
+  transition: all 1s ease-in-out;
+}
+
+.leave {
+  opacity: 1;
+}
+
+.leaveActive {
+  opacity: 0;
+  transition: all 1s ease-in-out;
+}
+
+.counter {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: #d8d6d6;
+  margin: 6px;
+}

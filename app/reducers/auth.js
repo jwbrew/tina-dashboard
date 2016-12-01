@@ -5,6 +5,7 @@ const userProfile = (state=null, action) => {
     case 'LOCK_SUCCESS':
     case 'SETTINGS_SAVE_SUCCESS':
     case 'CLIENT_SUBSCRIPTION_SUCCESS':
+    case 'ONBOARDING_SETTINGS_SAVE_SUCCESS':
       return {
         ...state,
         ...action.profile
@@ -33,6 +34,7 @@ function auth(state = {
       }
     case 'SETTINGS_SAVE_SUCCESS':
     case 'CLIENT_SUBSCRIPTION_SUCCESS':
+    case 'ONBOARDING_SETTINGS_SAVE_SUCCESS':
       return {
         ...state,
         isFetching: false,

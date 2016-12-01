@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import App from '../App';
+import Onboarding from '../Onboarding';
 import { loadConversations, conversationSuccess } from '../../actions/conversations';
-import { isAuthenticated, authToken } from '../../reducers';
+import {
+  isAuthenticated,
+  authToken,
+  getUserProfile
+} from '../../reducers';
 import { isTokenExpired } from '../../utils/jwtHelper';
 import { login, logout } from '../../actions/auth';
 
@@ -29,7 +34,11 @@ class Auth extends Component {
     ) {
       return null
     }
-    return(<App {...this.props} />)
+    if (!this.props.onboardingComplete)
+      return(<Onboarding {...this.props} />);
+
+    return(<App {...this.props} />);
+
   }
 };
 
@@ -37,7 +46,9 @@ const mapStateToProps = (state, ownProps) => {
   return {
     isAuthenticated: isAuthenticated(state),
     token: authToken(state),
-    isHydrated: state.hydration.isHydrated
+    isHydrated: state.hydration.isHydrated,
+    userProfile: getUserProfile(state),
+    onboardingComplete: state.onboarding.complete
   }
 }
 
