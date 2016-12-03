@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import Transition from 'react-addons-css-transition-group';
 import App from '../App';
 import Onboarding from '../Onboarding';
 import { loadConversations, conversationSuccess } from '../../actions/conversations';
@@ -10,6 +11,7 @@ import {
 } from '../../reducers';
 import { isTokenExpired } from '../../utils/jwtHelper';
 import { login, logout } from '../../actions/auth';
+import fade from '../Fade.css';
 
 
 class Auth extends Component {
@@ -34,11 +36,18 @@ class Auth extends Component {
     ) {
       return null
     }
-    if (!this.props.onboardingComplete)
-      return(<Onboarding {...this.props} />);
 
-    return(<App {...this.props} />);
-
+    return (
+      <Transition
+        transitionAppear={true}
+        transitionAppearTimeout={2000}
+        transitionName={fade}
+        transitionEnterTimeout={1000}
+        transitionLeaveTimeout={1000}>
+        { !this.props.onboardingComplete && <Onboarding {...this.props} /> }
+        { this.props.onboardingComplete && <App {...this.props} /> }
+      </Transition>
+    )
   }
 };
 

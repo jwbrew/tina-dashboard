@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Route, Router } from 'react-router'
+import { Route, Router, Redirect } from 'react-router'
 import styles from './styles.css';
 import Menu from '../Menu';
 
@@ -26,20 +26,29 @@ const Container = ({ children }) => {
   )
 }
 
+const routes = {
+    path: '/',
+    component: Container,
+    childRoutes: [
+        { path: 'stats', component: Stats },
+        {
+            path: 'conversations',
+            component: Conversations,
+            childRoutes: [{
+              path: '/conversations/:conversationId',
+              component: Conversation
+            }]
+        },
+        { path: 'account', component: Account },
+        { path: 'installation', component: Installation },
+        { path: 'settings', component: Settings }
+    ]
+};
+
 const Dashboard = () => {
   // const history = syncHistoryWithStore(browserHistory, store)
   return (
-    <Router history={browserHistory}>
-      <Route path="/" component={Container}>
-        <Route path="stats" component={Stats} />
-        <Route path="conversations" component={Conversations}>
-          <Route path="/conversations/:conversationId" component={Conversation}/>
-        </Route>
-        <Route path="account" component={Account} />
-        <Route path="installation" component={Installation} />
-        <Route path="settings" component={Settings} />
-      </Route>
-    </Router>
+    <Router history={browserHistory} routes={routes} />
   )
 }
 

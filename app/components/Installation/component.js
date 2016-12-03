@@ -4,7 +4,7 @@ import styles from '../Shared.css'
 const Installation = ({ userProfile }) => {
   return (
     <div className={styles.root}>
-      <h1>Installation</h1>
+      <h1>Installation Instructions</h1>
       <div className={styles.rows}>
         <div className={styles.panel}>
           <h2>Direct Link</h2>

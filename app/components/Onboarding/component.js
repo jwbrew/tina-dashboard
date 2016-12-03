@@ -5,14 +5,13 @@ import Welcome from './Welcome';
 import Settings from './Settings';
 import Payment from './Payment';
 import Guide from './Guide';
+import fade from '../Fade.css';
 
 export default ({ page }) => {
   return (
     <div className={styles.root}>
       <Transition
-        transitionAppear={true}
-        transitionAppearTimeout={2000}
-        transitionName={styles}
+        transitionName={fade}
         transitionEnterTimeout={1000}
         transitionLeaveTimeout={1000}>
         { page === 0 && <Welcome />}
