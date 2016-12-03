@@ -21,6 +21,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1A8ABB461DDDCE4700220F59 /* lato.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A8ABB451DDDCE4700220F59 /* lato.ttf */; };
+		1ABAA8281DEEEEAE00A6A8DE /* PusherNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ABAA8271DEEEEAE00A6A8DE /* PusherNotifications.m */; };
 		41E0F480E890471E93167685 /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 015B2287E2CC4EC7B55CD83E /* libReactNativeConfig.a */; };
 		58B201ECDAAF09F4705D9318 /* libPods-dashboard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 329D21642B1B8B98020A814A /* libPods-dashboard.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -184,6 +185,9 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = dashboard/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1A8ABB451DDDCE4700220F59 /* lato.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = lato.ttf; sourceTree = "<group>"; };
+		1ABAA8271DEEEEAE00A6A8DE /* PusherNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PusherNotifications.m; path = dashboard/PusherNotifications.m; sourceTree = "<group>"; };
+		1ABAA8291DEEEECA00A6A8DE /* PusherNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PusherNotifications.h; path = dashboard/PusherNotifications.h; sourceTree = "<group>"; };
+		1ABAA8491DEEF52500A6A8DE /* dashboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = dashboard.entitlements; path = dashboard/dashboard.entitlements; sourceTree = "<group>"; };
 		329D21642B1B8B98020A814A /* libPods-dashboard.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dashboard.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3428A28B68FE403EB21CF111 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		42058F1FF0CDCA65063C72D8 /* Pods-dashboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dashboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-dashboard/Pods-dashboard.release.xcconfig"; sourceTree = "<group>"; };
@@ -301,6 +305,7 @@
 		13B07FAE1A68108700A75B9A /* dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				1ABAA8491DEEF52500A6A8DE /* dashboard.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				1A8ABB451DDDCE4700220F59 /* lato.ttf */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -309,6 +314,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				1ABAA8291DEEEECA00A6A8DE /* PusherNotifications.h */,
+				1ABAA8271DEEEEAE00A6A8DE /* PusherNotifications.m */,
 			);
 			name = dashboard;
 			sourceTree = "<group>";
@@ -452,6 +459,11 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 67DFTTRK55;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -740,6 +752,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				1ABAA8281DEEEEAE00A6A8DE /* PusherNotifications.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -765,6 +778,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = dashboard/dashboard.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 67DFTTRK55;
@@ -799,6 +813,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = dashboard/dashboard.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 67DFTTRK55;
 				HEADER_SEARCH_PATHS = (

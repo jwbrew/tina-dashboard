@@ -6,11 +6,7 @@ target 'dashboard' do
   # use_frameworks!
 
   # Pods for dashboard
-
-  target 'dashboardTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+  pod 'libPusher', git: 'https://github.com/pusher/libPusher.git', branch: 'push-notifications'
 
 end
 

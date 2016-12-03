@@ -11,11 +11,16 @@
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
+#import "ReactNativeConfig.h"
+#import "RCTLog.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  NSString *pusherKey = [ReactNativeConfig envFor:@"PUSHER_KEY"];
+  self.pusher = [PTPusher pusherWithKey:pusherKey delegate:self encrypted:YES];
+
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
@@ -32,6 +37,22 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+  RCTLogInfo(@"didRegisterUserNotificationSettings");
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  RCTLogInfo(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ (%@)", deviceToken, self.pusher);
+  [[[self pusher] nativePusher] registerWithDeviceToken:deviceToken];
+  [[[self pusher] nativePusher] subscribe:@"donuts"];
+
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  RCTLogInfo(@"didFailToRegisterForRemoteNotificationsWithError: %@", error);
 }
 
 @end
