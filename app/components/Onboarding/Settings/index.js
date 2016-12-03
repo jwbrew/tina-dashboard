@@ -5,9 +5,11 @@ import {
   getToken,
   getUserProfile
 } from '../../../reducers';
-import { nextPage } from '../../../actions/onboarding';
 import Api from '../../../utils/Api';
-import { saveSettings, updateForm } from '../../../actions/onboarding';
+import {
+  saveMetadata,
+  updateForm
+} from '../../../actions/user';
 
 
 class Settings extends React.Component {
@@ -22,7 +24,6 @@ class Settings extends React.Component {
     this.checkSlug(slug)
     props.updateForm('welcome', "Hey!\nNeed a hand?\nLet's chat")
     this.props.updateForm('welcome', true);
-
   }
 
   checkSlug = (slug) => {
@@ -36,6 +37,10 @@ class Settings extends React.Component {
         this.props.updateForm('slug', true);
       }
     })
+  }
+
+  onPictureChange = (e) => {
+    this.props.updateForm('picture', e[0])
   }
 
   onSlugChange = (e) => {
@@ -54,14 +59,21 @@ class Settings extends React.Component {
   }
 
   isFormValid = () => {
-    return this.props.form.welcome.valid && this.props.form.slug.valid
+    return (
+      this.props.form.welcome &&
+      this.props.form.welcome.valid &&
+      this.props.form.slug &&
+      this.props.form.slug.valid &&
+      this.props.form.picture
+    )
   }
 
   submitForm = () => {
-    this.props.saveSettings(this.props, this.props.userProfile, {
-      slug: this.props.form.slug.value,
-      welcome: this.props.form.welcome.value
-    })
+    this.props.saveMetadata(
+      this.props,
+      this.props.userProfile,
+      this.props.form
+    )
   }
 
   render() {
@@ -70,6 +82,7 @@ class Settings extends React.Component {
         {...this.props}
         submitForm={this.submitForm}
         isFormValid={this.isFormValid()}
+        onPictureChange={this.onPictureChange}
         onSlugChange={this.onSlugChange}
         onWelcomeChange={this.onWelcomeChange}
       />
@@ -81,8 +94,9 @@ const mapStateToProps = (state) => {
   return {
     token: getToken(state),
     userProfile: getUserProfile(state),
-    form: state.onboarding.form
+    form: state.user.form,
+    isSaving: state.user.isFetching
   }
 }
 
-export default connect(mapStateToProps, { nextPage, saveSettings, updateForm })(Settings);
+export default connect(mapStateToProps, { saveMetadata, updateForm })(Settings);

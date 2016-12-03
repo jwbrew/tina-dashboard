@@ -3,6 +3,7 @@ import Component from './component';
 import { getUserProfile } from '../../../reducers';
 import { completeOnboarding, nextPage } from '../../../actions/onboarding';
 import { subscribeClient } from '../../../actions/account';
+import { push } from 'react-router-redux'
 
 const mapStateToProps = (state) => {
   return {
@@ -13,5 +14,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   completeOnboarding,
   nextPage,
-  subscribeClient
+  subscribeClient,
+  push
 })(Component);

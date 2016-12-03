@@ -4,23 +4,25 @@ import { getUserProfile } from '../../reducers';
 import {
   startEditing,
   cancelEditing,
-  saveEditing,
-  updateForm
 } from '../../actions/settings';
+import {
+  saveMetadata,
+  updateForm
+} from '../../actions/user';
 
 const mapStateToProps = (state) => {
   return {
     isEditing: state.settings.isEditing,
-    auth: state.auth,
-    isSaving: state.settings.isSaving,
+    user: state.user,
+    isSaving: state.user.isFetching,
     userProfile: getUserProfile(state),
-    form: state.settings.form
+    form: state.user.form
   }
 }
 
 export default connect(mapStateToProps, {
   startEditing,
   cancelEditing,
-  saveEditing,
+  saveMetadata,
   updateForm
 })(Component);

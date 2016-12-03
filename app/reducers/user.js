@@ -1,49 +1,57 @@
 import { combineReducers } from 'redux'
-
-const profile = (state=null, action) => {
-  switch (action.type) {
-    case 'LOCK_SUCCESS':
-    case 'SETTINGS_SAVE_SUCCESS':
-    case 'CLIENT_SUBSCRIPTION_SUCCESS':
-    case 'ONBOARDING_SETTINGS_SAVE_SUCCESS':
-      return {
-        ...state,
-        ...action.profile
-      }
-      break;
-    case 'LOGOUT':
-      return {}
-      break;
-    default:
-      return state;
-  }
-}
+import { isBoolean } from 'lodash';
 
 function auth(state = {
     isFetching: false,
     isAuthenticated: false,
     type: 'client',
     profile: {},
-    token: null
+    form: {}
   }, action) {
   switch (action.type) {
+    case 'SETTINGS_EDITING_START':
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          picture: {}
+        }
+      }
     case 'CLIENT_SUBSCRIPTION_REQUEST':
+    case 'USER_METADATA_SAVE_REQUEST':
+    case 'USER_METADATA_PICTURE_UPLOAD_START':
       return {
         ...state,
         isFetching: true
       }
-    case 'SETTINGS_SAVE_SUCCESS':
     case 'CLIENT_SUBSCRIPTION_SUCCESS':
-    case 'ONBOARDING_SETTINGS_SAVE_SUCCESS':
+    case 'USER_METADATA_SAVE_SUCCESS':
+    case 'USER_METADATA_PICTURE_UPLOAD_COMPLETE':
       return {
         ...state,
         isFetching: false,
-        profile: profile(state.profile, action)
+        profile: {
+          ...state.profile,
+          ...action.profile
+        }
       }
     case 'CLIENT_SUBSCRIPTION_FAILURE':
+    case 'USER_METADATA_SAVE_FAILURE':
       return {
         ...state,
         isFetching: false
+      }
+    case 'USER_METADATA_FORM_UPDATE':
+    const { field, value } = action.payload;
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          [field]: {
+            ...state.form[field],
+            [isBoolean(value) ? 'valid' : 'value']: value
+          }
+        }
       }
     case 'LOCK_SUCCESS':
       return {
@@ -51,15 +59,16 @@ function auth(state = {
         isFetching: false,
         isAuthenticated: true,
         errorMessage: '',
-        profile: profile(state.profile, action),
-        token: action.token
+        token: action.token,
+        profile: {
+          ...state.profile,
+          ...action.profile
+        }
       }
     case 'LOGOUT':
       return {
-        ...state,
         isFetching: true,
-        isAuthenticated: false,
-        idToken: null
+        isAuthenticated: false
       }
     default:
       return state
@@ -69,5 +78,6 @@ function auth(state = {
 export default auth
 
 export const getUserProfile = (state) => state.profile
+export const getUserForm = (state) => state.form
 export const isAuthenticated = (state) => state.isAuthenticated
 export const authToken = (state) => state.token

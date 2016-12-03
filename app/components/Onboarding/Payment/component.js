@@ -3,9 +3,9 @@ import styles from '../shared.css';
 import Stripe from '../../Stripe';
 
 export default ({
-  completeOnboarding,
   userProfile,
-  subscribeClient
+  subscribeClient,
+  push
 }) => {
   var planDetails
 
@@ -53,7 +53,6 @@ export default ({
             userProfile.user_metadata.initial_plan_id,
             token.id
           )
-          completeOnboarding()
         }}
       >
         <button className={styles.button}>Start 7 day free trial</button>

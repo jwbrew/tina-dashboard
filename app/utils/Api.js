@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import restful, { fetchBackend } from 'restful.js';
+import superagent from 'superagent';
 import Config from './Config';
 var api = restful(Config.API_ENDPOINT, fetchBackend(fetch));
 import { normalize } from 'normalizr';
@@ -81,6 +82,24 @@ export default function(token) {
       .custom('charge')
       .post({ public_key, amount })
       .then(normalizeResponse(conversation))
+  }
+
+  api.savePicture = (file, { user_id }) => {
+    var req = superagent.post('https://api.cloudinary.com/v1_1/asktina/image/upload');
+
+    req.attach('file', file);
+    req.field('public_id', user_id + new Date().getTime());
+    req.field('upload_preset', 'scmp0gj3')
+
+    return new Promise(function(resolve, reject) {
+      req.end((err, response) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(response.body)
+        }
+      });
+    })
   }
 
   api.updateUser = ({ user_id }, user_metadata) => {
