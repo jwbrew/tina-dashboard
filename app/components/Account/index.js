@@ -32,7 +32,7 @@ class Account extends React.Component {
 const mapStateToProps = (state) => {
   return {
     client: getUserProfile(state),
-    isFetching: state.auth.isFetching
+    isFetching: state.user.isFetching
   }
 }
 

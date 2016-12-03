@@ -1,10 +1,10 @@
 import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
-import auth, * as fromAuth from './auth';
 import conversations, * as fromConversations from './conversations';
 import messages, * as fromMessages from './messages';
 import onboarding from './onboarding';
 import settings from './settings';
+import user, * as fromUser from './user';
 
 const hydration = (state={isHydrated: false}, action) => {
   if (action.type === 'persist/REHYDRATE') {
@@ -17,12 +17,12 @@ const hydration = (state={isHydrated: false}, action) => {
 
 const appReducers = combineReducers({
   routing,
-  auth,
   conversations,
   hydration,
   messages,
   onboarding,
-  settings
+  settings,
+  user
 })
 
 export default (state, action) => {
@@ -49,15 +49,15 @@ export const getConversationsSorted = (state) => {
 }
 
 export const getUserProfile = (state) => {
-  return fromAuth.getUserProfile(state.auth);
+  return fromUser.getUserProfile(state.user);
 }
 
 export const isAuthenticated = (state) => {
-  return fromAuth.isAuthenticated(state.auth);
+  return fromUser.isAuthenticated(state.user);
 }
 
 export const authToken = (state) => {
-  return fromAuth.authToken(state.auth);
+  return fromUser.authToken(state.user);
 }
 
 export const getMessagesForConversation = (state, conversationId) => {
@@ -69,9 +69,17 @@ export const getGroupedMessagesForConversation = (state, conversationId) => {
 }
 
 export const getUserType = (state) => {
-  return state.auth.userType
+  return state.user.type
 }
 
 export const getClientId = (state) => {
-  return auth.user_id
+  return state.user.user_id
+}
+
+export const isAdmin = (state) => {
+  return state.user.profile.user_metadata && state.user.profile.user_metadata.admin;
+}
+
+export const getToken = (state) => {
+  return state.user.token
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Menu from './component';
 import { logout } from '../../actions/auth';
-import { getActiveConversationCount } from '../../reducers';
+import { getActiveConversationCount, isAdmin } from '../../reducers';
 
 class MenuContainer extends Component {
   render() {
@@ -12,9 +12,9 @@ class MenuContainer extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isAuthenticated: state.auth.isAuthenticated,
+    isAuthenticated: state.user.isAuthenticated,
     activeConversationCount: getActiveConversationCount(state),
-    isAdmin: (state.auth.userProfile.user_metadata && state.auth.userProfile.user_metadata.admin)
+    isAdmin: isAdmin(state)
   }
 }
 

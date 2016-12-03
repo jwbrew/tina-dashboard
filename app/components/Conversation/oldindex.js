@@ -5,7 +5,8 @@ import Conversation from './component';
 import {
   getActiveConversation,
   getMessagesForConversation,
-  getConversationPrice
+  getConversationPrice,
+  getUserType
 } from '../../reducers';
 import { onMessages } from '../../actions/messages';
 import {
@@ -19,7 +20,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     conversation: getActiveConversation(state, ownProps.params.conversationId),
     messages: getMessagesForConversation(state, ownProps.params.conversationId),
-    userType: state.auth.userType
+    userType: getUserType(state)
   }
 }
 

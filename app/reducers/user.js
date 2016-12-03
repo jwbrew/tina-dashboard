@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-const userProfile = (state=null, action) => {
+const profile = (state=null, action) => {
   switch (action.type) {
     case 'LOCK_SUCCESS':
     case 'SETTINGS_SAVE_SUCCESS':
@@ -22,8 +22,8 @@ const userProfile = (state=null, action) => {
 function auth(state = {
     isFetching: false,
     isAuthenticated: false,
-    userType: 'client',
-    userProfile: {},
+    type: 'client',
+    profile: {},
     token: null
   }, action) {
   switch (action.type) {
@@ -38,7 +38,7 @@ function auth(state = {
       return {
         ...state,
         isFetching: false,
-        userProfile: userProfile(state.userProfile, action)
+        profile: profile(state.profile, action)
       }
     case 'CLIENT_SUBSCRIPTION_FAILURE':
       return {
@@ -51,7 +51,7 @@ function auth(state = {
         isFetching: false,
         isAuthenticated: true,
         errorMessage: '',
-        userProfile: userProfile(state.userProfile, action),
+        profile: profile(state.profile, action),
         token: action.token
       }
     case 'LOGOUT':
@@ -68,6 +68,6 @@ function auth(state = {
 
 export default auth
 
-export const getUserProfile = (state) => state.userProfile
+export const getUserProfile = (state) => state.profile
 export const isAuthenticated = (state) => state.isAuthenticated
 export const authToken = (state) => state.token

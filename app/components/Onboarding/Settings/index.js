@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Component from './component';
-import { getUserProfile } from '../../../reducers';
+import {
+  getToken,
+  getUserProfile
+} from '../../../reducers';
 import { nextPage } from '../../../actions/onboarding';
 import Api from '../../../utils/Api';
 import { saveSettings, updateForm } from '../../../actions/onboarding';
@@ -76,7 +79,7 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.auth.token,
+    token: getToken(state),
     userProfile: getUserProfile(state),
     form: state.onboarding.form
   }

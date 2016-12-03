@@ -5,7 +5,8 @@ import {
   loadConversations,
   conversationSuccess
 } from '../../actions/conversations';
-import pusher from '../../utils/Pusher';;
+import { getUserProfile } from '../../reducers';
+import pusher from '../../utils/Pusher';
 
 
 class Component extends React.Component {
@@ -24,7 +25,7 @@ class Component extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    client: state.auth.userProfile
+    client: getUserProfile(state)
   }
 }
 
