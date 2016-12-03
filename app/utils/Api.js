@@ -88,7 +88,7 @@ export default function(token) {
     var req = superagent.post('https://api.cloudinary.com/v1_1/asktina/image/upload');
 
     req.attach('file', file);
-    req.field('public_id', user_id + new Date().getTime());
+    req.field('public_id', user_id + '/' + new Date().getTime());
     req.field('upload_preset', 'scmp0gj3')
 
     return new Promise(function(resolve, reject) {
