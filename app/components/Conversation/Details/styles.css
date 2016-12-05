@@ -1,0 +1,78 @@
+
+.details {
+  flex-shrink: 1;
+  padding: 1em;
+  background-color: rgba(128,128,128,0.05);
+  flex-direction: column;
+  text-align: center;
+  width: 230px;
+}
+
+.timer {
+  font-size: 1.4em;
+}
+
+.icon {
+  height: 1em;
+  margin-left: 0.6em;
+  cursor: pointer;
+}
+
+.inputGroup {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: white;
+  border: 1px #9b5b64 solid;
+  display: flex;
+  align-items: center;
+  margin-top: 0.5em;
+}
+
+.inputGroup > * {
+  border: none;
+}
+
+.inputGroup > *:focus {
+  outline: none;
+}
+
+.inputGroup > span {
+  padding-left: 0.5em;
+}
+
+.button {
+  color: #9B5B74;
+  cursor: pointer;
+  padding: 0.3em 0.5em;
+  background-color: transparent;
+  font-family: 'Lato', sans-serif;
+}
+
+.input {
+  padding: 0.5em;
+  line-height: 2em;
+  border-bottom: none;
+  width: 100%;
+}
+
+.section + .section {
+  margin-top: 2em;
+}
+
+.charges {
+  text-align: left;
+}
+
+.label {
+  display: block;
+}
+
+.date {
+  margin-right: 1em;
+}
+
+p.text {
+  color: white;
+  font-size: 0.8em;
+  margin: 0 20px 10px;
+}
