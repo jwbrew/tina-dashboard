@@ -57,7 +57,14 @@ const mapStateToProps = (state, ownProps) => {
     token: authToken(state),
     isHydrated: state.hydration.isHydrated,
     userProfile: getUserProfile(state),
-    onboardingComplete: state.user.profile.user_metadata && state.user.profile.user_metadata.stripe_customer_id
+    onboardingComplete: (
+      state.user.profile && state.user.profile.user_metadata &&
+      (
+        state.user.profile.user_metadata.stripe_customer_id ||
+        !state.user.profile.user_metadata.initial_plan_id
+      )
+    )
+
   }
 }
 
