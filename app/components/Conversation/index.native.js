@@ -1,6 +1,6 @@
 import React from 'react';
 import { BackAndroid } from 'react-native';
-import Container from './container';
+import Component from './component';
 import { connect } from 'react-redux';
 import { getActiveConversation } from '../../reducers';
 import { conversationSuccess } from '../../actions/conversations';
@@ -19,7 +19,7 @@ class Conversation extends React.Component {
   }
 
   render() {
-    return (<Container {...this.props} />)
+    return (<Component {...this.props} />)
   }
 }
 

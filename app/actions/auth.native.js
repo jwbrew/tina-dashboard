@@ -33,11 +33,8 @@ export const logout = () => ({
 // Opens the Lock widget and
 // dispatches actions along the way
 export function login() {
-  console.log('login');
   return dispatch => {
-    console.log('showing');
     lock.show({}, (err, profile, token) => {
-      console.log('callbacl');
       if (token) {
         dispatch(lockSuccess(profile, token.idToken))
       }

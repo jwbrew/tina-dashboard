@@ -18,8 +18,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
   NSString *pusherKey = [ReactNativeConfig envFor:@"PUSHER_KEY"];
   self.pusher = [PTPusher pusherWithKey:pusherKey delegate:self encrypted:YES];
+  UIUserNotificationType notificationTypes = UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
+  UIUserNotificationSettings *pushNotificationSettings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories: NULL];
+  [application registerUserNotificationSettings:pushNotificationSettings];
+  [application registerForRemoteNotifications];
 
   NSURL *jsCodeLocation;
 
@@ -45,10 +50,7 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  RCTLogInfo(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ (%@)", deviceToken, self.pusher);
   [[[self pusher] nativePusher] registerWithDeviceToken:deviceToken];
-  [[[self pusher] nativePusher] subscribe:@"donuts"];
-
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {

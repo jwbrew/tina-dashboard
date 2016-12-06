@@ -18,13 +18,10 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(subscribe:(NSString *)intent)
 {
-  self.application = [UIApplication sharedApplication];
-
-  RCTLogInfo(@"Subscribing to intent: %@", intent);
-  UIUserNotificationType notificationTypes = UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
-  UIUserNotificationSettings *pushNotificationSettings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories: NULL];
-  [self.application registerUserNotificationSettings:pushNotificationSettings];
-  [self.application registerForRemoteNotifications];
+//  RCTLogInfo(@"PusherNotificationsSubscribe: %@", intent);
+  self.appDelegate = [[UIApplication sharedApplication] delegate];
+  self.pusher = self.appDelegate.pusher;
+  [[self.pusher nativePusher] subscribe:intent];
 }
 
 @end

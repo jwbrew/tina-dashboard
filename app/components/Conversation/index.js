@@ -1,4 +1,4 @@
-import Container from './container';
+import Component from './component';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { getActiveConversation } from '../../reducers';
@@ -16,4 +16,4 @@ const mapStateToProps = (state, ownProps) => {
 export default withRouter(connect(mapStateToProps, {
   conversationSuccess,
   messageSuccess
-})(Container));
+})(Component));

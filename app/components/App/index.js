@@ -5,17 +5,19 @@ import {
   loadConversations,
   conversationSuccess
 } from '../../actions/conversations';
+import { messageSuccess } from '../../actions/messages';
 import { getUserProfile } from '../../reducers';
-import pusher from '../../utils/Pusher';
+import { subscribeClient, normalizedBind } from '../../utils/Pusher';
 
 
 class Component extends React.Component {
   componentDidMount() {
     let id = this.props.client.user_id || this.props.client.userId
     this.props.loadConversations(this.props.token)
-    this.pusher = pusher
-    this.pusher.subscribe('clients-' + id.split('|')[1])
-    this.pusher.normalizedBind('new-conversation', 'conversation', this.props.conversationSuccess)
+    subscribeClient(this.props.client)
+    normalizedBind('new-conversation', 'conversation', this.props.conversationSuccess)
+    normalizedBind('updated-conversation', 'conversation', this.props.conversationSuccess)
+    normalizedBind('new-message', 'message', this.props.messageSuccess)
   }
 
   render() {
@@ -31,5 +33,6 @@ const mapStateToProps = (state, props) => {
 
 export default connect(mapStateToProps, {
   loadConversations,
-  conversationSuccess
+  conversationSuccess,
+  messageSuccess
 })(Component);

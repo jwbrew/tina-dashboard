@@ -10,8 +10,10 @@
 #define PusherNotifications_h
 
 #import "RCTBridgeModule.h"
-@interface PusherNotifications : NSObject <RCTBridgeModule>
-@property (nonatomic, strong) UIApplication *application;
+
+@interface PusherNotifications : NSObject <RCTBridgeModule, PTPusherDelegate>
+@property (nonatomic, strong) AppDelegate *appDelegate;
+@property (nonatomic, strong) PTPusher *pusher;
 
 @end
 

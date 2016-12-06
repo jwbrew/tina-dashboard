@@ -1,8 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Transition from 'react-addons-css-transition-group';
-import App from '../App';
-import Onboarding from '../Onboarding';
+import Component from './component';
 import { loadConversations, conversationSuccess } from '../../actions/conversations';
 import {
   isAuthenticated,
@@ -11,15 +9,19 @@ import {
 } from '../../reducers';
 import { isTokenExpired } from '../../utils/jwtHelper';
 import { login, logout } from '../../actions/auth';
-import fade from '../Fade.css';
 
 
-class Auth extends Component {
+class Auth extends React.Component {
   static propTypes = {
     loadConversations: PropTypes.func
   };
 
+  componentDidMount() {
+    if (this.props.isHydrated) this.checkAuth(this.props)
+  }
+
   componentWillReceiveProps(props) {
+    console.log('componentWillReceiveProps');
     if (props.isHydrated) this.checkAuth(props)
   }
 
@@ -37,17 +39,7 @@ class Auth extends Component {
       return null
     }
 
-    return (
-      <Transition
-        transitionAppear={true}
-        transitionAppearTimeout={2000}
-        transitionName={fade}
-        transitionEnterTimeout={1000}
-        transitionLeaveTimeout={1000}>
-        { !this.props.onboardingComplete && <Onboarding {...this.props} /> }
-        { this.props.onboardingComplete && <App {...this.props} /> }
-      </Transition>
-    )
+    return (<Component {...this.props} />)
   }
 };
 
