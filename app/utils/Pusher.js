@@ -18,11 +18,7 @@ export function normalizedBind(channel, scheme, callback) {
 export function subscribeClient({ user_id }) {
   let clientId = user_id.split('|')[1];
   let wsChannel = 'clients-' + clientId;
-
-  console.log('subscribeClient', wsChannel);
-
   pusher.subscribe(wsChannel);
-  console.log(pusher);
 }
 
 export default pusher

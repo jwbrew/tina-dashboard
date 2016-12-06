@@ -802,7 +802,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.AskTina.ExpertDashboard;
 				PRODUCT_NAME = dashboard;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -836,7 +836,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.AskTina.ExpertDashboard;
 				PRODUCT_NAME = dashboard;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
