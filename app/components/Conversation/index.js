@@ -2,10 +2,6 @@ import Component from './component';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { getActiveConversation } from '../../reducers';
-import {
-  conversationSuccess
-} from '../../actions/conversations';
-import { messageSuccess } from '../../actions/messages';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -13,7 +9,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {
-  conversationSuccess,
-  messageSuccess
-})(Component));
+export default withRouter(connect(mapStateToProps, {})(Component));

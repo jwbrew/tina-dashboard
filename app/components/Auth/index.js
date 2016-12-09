@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Component from './component';
-import { loadConversations, conversationSuccess } from '../../actions/conversations';
 import {
   isAuthenticated,
   authToken,
@@ -12,16 +11,11 @@ import { login, logout } from '../../actions/auth';
 
 
 class Auth extends React.Component {
-  static propTypes = {
-    loadConversations: PropTypes.func
-  };
-
   componentDidMount() {
     if (this.props.isHydrated) this.checkAuth(this.props)
   }
 
   componentWillReceiveProps(props) {
-    console.log('componentWillReceiveProps');
     if (props.isHydrated) this.checkAuth(props)
   }
 
@@ -60,4 +54,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, { loadConversations, conversationSuccess, login, logout })(Auth);
+export default connect(mapStateToProps, { login, logout })(Auth);

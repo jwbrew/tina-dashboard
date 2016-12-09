@@ -1,41 +1,30 @@
 import React, { PropTypes } from 'react';
 import { Route, Router, Redirect } from 'react-router'
-import styles from './styles.css';
-import Menu from '../Menu';
 
+import Main from '../Main';
 import Stats from '../Stats';
 import Conversations from '../Conversations';
 import Conversation from '../Conversation';
 import Account from '../Account';
 import Installation from '../Installation';
 import Settings from '../Settings';
+import Status from '../Status';
+
+import Live from '../Live';
 
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
-const Container = ({ children }) => {
-  return (
-    <div className={styles.root}>
-      <div className={styles.menu}>
-        <Menu />
-      </div>
-      <div className={styles.container}>
-        { children }
-      </div>
-    </div>
-  )
-}
-
 const routes = {
     path: '/',
-    component: Container,
+    component: Main,
     childRoutes: [
         { path: 'stats', component: Stats },
         {
-            path: 'conversations',
+            path: 'history',
             component: Conversations,
             childRoutes: [{
-              path: '/conversations/:conversationId',
+              path: '/history/:conversationId',
               component: Conversation
             }]
         },

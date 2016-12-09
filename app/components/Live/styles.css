@@ -64,12 +64,8 @@
 }
 
 .start {
-  position: absolute;
   fill: #8dff76;
-  width: 25px;
-  top: 6px;
-  height: 25px;
-  right: 6px;
+  width: 6em;
 }
 
 
@@ -82,9 +78,9 @@
   right: 3px;
 }
 
-p.text {
+p.lead {
   color: white;
-  font-size: 0.8em;
+  font-size: 2.5em;
 }
 
 @keyframes shake {

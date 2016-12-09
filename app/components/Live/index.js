@@ -2,18 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Component from './component';
 import {
-  getActiveConversation
-} from '../../../reducers';
-import {
   liveCallStarted,
   liveCallAnswered,
-  liveCallEnded
-} from '../../../actions/live';
-import pusher from '../../../utils/Pusher';
+  liveCallEnded,
+  receiveMessage,
+  sendMessage
+} from '../../actions/live';
+import { getUserProfile } from '../../reducers';
+import pusher from '../../utils/Pusher';
 require('webrtc-adapter');
-
-const debug = () => {}
-// const debug = console.log
 
 var pc
 
@@ -39,16 +36,15 @@ class Live extends React.Component {
       isChannelReady: false,
       isInitiator: false,
       isStarted: false,
-      hasOffer: false,
-      isOpen: false
+      hasOffer: false
     }
 
-    this.pusher = pusher
-    this.pusher.bind('client-media', this.maybeStart)
-    this.pusher.bind('client-offer', this.receiveOffer)
-    this.pusher.bind('client-answer', this.receiveAnswer)
-    this.pusher.bind('client-candidate', this.receiveCandidate)
-    this.pusher.bind('client-hangup', this.receiveHangup)
+    pusher.bind_all(this.props.receiveMessage)
+    pusher.bind('media', this.maybeStart)
+    pusher.bind('offer', this.receiveOffer)
+    pusher.bind('answer', this.receiveAnswer)
+    pusher.bind('candidate', this.receiveCandidate)
+    pusher.bind('hangup', this.receiveHangup)
   }
 
   // Component Lifecycle
@@ -56,24 +52,13 @@ class Live extends React.Component {
     this.init(this.props)
   }
 
-  componentWillReceiveProps(props) {
-    debug('componentWillReceiveProps', props);
-    if (this.state.isStarted) this.hangup()
-    this.init(props)
-  }
-
   componentWillUnmount() {
-    debug('componentWillUnmount');
     this.channel.unsubscribe()
     this.stop()
   }
 
   init(props) {
-    debug('init', props);
-    this.pusher.subscribe(this.channelId(props));
-    this.channel = this.pusher.channels.channels[this.channelId(props)]
-
-    debug('subscribed', this.channel);
+    this.channel = pusher.channels.channels[0]
     this.setState({
       isChannelReady: true,
       remoteStream: null,
@@ -87,12 +72,8 @@ class Live extends React.Component {
 
   // Generic
 
-  channelId = (props) => {
-    return 'private-live-' + props.conversation.id
-  }
 
   createPeerConnection = () => {
-    debug('createPeerConnection', pc);
     if (pc && pc.iceConnectionState === 'open') return
     try {
       pc = new RTCPeerConnection(pcConfig);
@@ -100,15 +81,12 @@ class Live extends React.Component {
       pc.onaddstream = this.handleRemoteStreamAdded;
       pc.onremovestream = this.handleRemoteStreamRemoved;
       pc.oniceconnectionstatechange = this.handleConnectionStateChange;
-      debug('peerConnection created', pc)
     } catch (e) {
-      debug('Cannot create RTCPeerConnection object.', e);
       return;
     }
   }
 
   getLocalStream = () => {
-    debug('getLocalStream', this.state.localStream);
     navigator.getUserMedia({
       audio: true,
       video: true
@@ -120,7 +98,6 @@ class Live extends React.Component {
   }
 
   gotLocalStream = (stream) => {
-    debug('gotLocalStream', stream);
     this.setState({
       localStream: stream
     }, () => {
@@ -129,7 +106,6 @@ class Live extends React.Component {
   }
 
   handleIceCandidate = (event) => {
-    debug('handleIceCandidate', event);
     if (event.candidate) {
       this.sendMessage(
         'candidate',
@@ -139,30 +115,18 @@ class Live extends React.Component {
           candidate: event.candidate.candidate
         }
       );
-    } else {
-      debug('End of candidates.');
     }
   }
 
   handleRemoteHangup = () => {
-    debug('handleRemoteHangup');
     this.stop();
   }
 
   handleRemoteStreamAdded = (event) => {
-    debug('handleRemoteStreamAdded', event, this.setState);
-    this.setState({ remoteStream: event.stream }, () => {
-      debug('remoteStreamAdded');
-    })
+    this.setState({ remoteStream: event.stream })
   }
 
   maybeStart = () => {
-    debug(
-      'maybeStart',
-      !this.state.isStarted,
-      this.state.localStream !== 'undefined',
-      this.state.isChannelReady
-    );
     if (
       !this.state.isStarted &&
       this.state.localStream !== 'undefined' &&
@@ -177,7 +141,6 @@ class Live extends React.Component {
   }
 
   setLocalAndSendMessage = (sessionDescription) => {
-    debug('setLocalAndSendMessage', sessionDescription);
     // Set Opus as the preferred codec in SDP if Opus is present.
     //  sessionDescription.sdp = preferOpus(sessionDescription.sdp);
     pc.setLocalDescription(
@@ -197,28 +160,22 @@ class Live extends React.Component {
   close = () => {
     this.state.localStream.getTracks().forEach((t) => t.stop())
     this.setState({
-      isOpen: false,
-      localStream: null
+      localStream: null,
+      isOpen: false
     }, this.stop)
   }
 
   // Making the call
 
   doCall = () => {
-    debug('doCall', pc)
     window.foo  = pc
     pc.createOffer(
       this.setLocalAndSendMessage,
-      this.handleCreateOfferError
+      console.log
     );
   }
 
-  handleCreateOfferError(event) {
-    debug('createOffer() error: ', event);
-  }
-
   startCall = () => {
-    debug('startCall');
     this.props.liveCallStarted()
     this.setState({
       isInitiator: true
@@ -227,12 +184,10 @@ class Live extends React.Component {
   // Receiving the call
 
   doAnswer = () => {
-    debug('doAnswer', pc);
     this.props.liveCallAnswered()
-    debug('createAnswer')
     pc.createAnswer().then(
       this.onCreateSessionDescriptionSuccess,
-      this.onCreateSessionDescriptionError
+      console.log
     );
   }
 
@@ -243,27 +198,17 @@ class Live extends React.Component {
     })
   }
 
-  onCreateSessionDescriptionError(error) {
-    debug('onCreateSessionDescriptionError', error);
-  }
-
   receiveAnswer = (message) => {
-    debug('RECEIVE MESSAGE: answer', message);
     if (!this.state.isStarted) return
-    debug('receiveAnswer pc.setRemoteDescription', new RTCSessionDescription(message));
     pc.setRemoteDescription(new RTCSessionDescription(message))
       .then(() => {
-        debug('hasSetRemoteDescription', pc);
         this.setState({
           hasAnswered: true
         })
-      }).catch((e) => {
-        debug('errorSettingRemoteDescription', e);
       });
   }
 
   receiveCandidate = (message) => {
-    debug('RECEIVE MESSAGE: candidate', message);
     if (!this.state.isStarted) return
     let candidate = new RTCIceCandidate({
       sdpMLineIndex: message.label,
@@ -273,9 +218,10 @@ class Live extends React.Component {
   }
 
   receiveOffer = (message) => {
-    debug('RECEIVE MESSAGE: offer', message, this.state);
+    if (this.state.isStarted) return;
     this.setState({
-      hasOffer: true
+      hasOffer: true,
+      sessionId: message.session_id
     }, () => {
       if (
         !this.state.isInitiator &&
@@ -286,7 +232,6 @@ class Live extends React.Component {
       }
     })
 
-    debug('receiveOffer pc.setRemoteDescription', new RTCSessionDescription(message));
     pc.setRemoteDescription(
       new RTCSessionDescription(message)
     );
@@ -295,42 +240,31 @@ class Live extends React.Component {
   // Current Call
 
   handleConnectionStateChange = (event) => {
-    debug('handleConnectionStateChange', event, pc.iceConnectionState)
     if (pc && pc.iceConnectionState == 'disconnected') {
         this.handleRemoteStreamRemoved()
     }
   }
 
   handleRemoteStreamRemoved = (event) => {
-    debug(
-      'Remote stream removed. Event: ', event
-    );
-    // this.setState({
-    //   remoteStream: null
-    // })
     this.close()
   }
 
   hangup = () => {
-    debug('hangup');
     this.props.liveCallEnded()
-    this.stop();
+    this.close();
     this.sendMessage('hangup');
   }
 
   receiveHangup = (message) => {
-    debug('RECEIVE MESSAGE hangup', message, this.state.isStarted);
     if (!this.state.isStarted) return
     this.handleRemoteHangup()
   }
 
   sendMessage = (name, data) => {
-    debug('SEND MESSAGE', 'client-' + name, data);
-    this.channel.trigger('client-' + name, data)
+    this.props.sendMessage(name, data, this.props.client, this.state.sessionId)
   }
 
   stop = () => {
-    debug('stop', pc, this.state)
     if (pc.iceConnectionState != 'closed') {
       pc.close()
       this.createPeerConnection()
@@ -347,13 +281,10 @@ class Live extends React.Component {
   }
 
   render() {
-    debug('RENDERING', this.state);
-
     return (
       <Component
         {...this.props}
         {...this.state}
-        open={this.open}
         close={this.close}
         startCall={this.startCall}
         doAnswer={this.doAnswer}
@@ -365,14 +296,14 @@ class Live extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    conversation: getActiveConversation(
-      state, ownProps.conversationId
-    )
+    client: getUserProfile(state)
   }
 }
 
 export default connect(mapStateToProps, {
   liveCallStarted,
   liveCallAnswered,
-  liveCallEnded
+  liveCallEnded,
+  receiveMessage,
+  sendMessage
 })(Live);

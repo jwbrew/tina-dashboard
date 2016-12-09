@@ -16,9 +16,6 @@ const Conversations = ({ conversations, children }) => {
             <ConversationsListItem key={c.id} {...c} /> )}
         </ReactCSSTransitionGroup>
       </ul>
-      <div className={styles.container}>
-        { conversations.length > 0 && children }
-      </div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './styles.css';
-import Messenger from '../Messenger';
+import Live from '../Live';
 import Loader from '../Loader';
 import Details from './Details';
 
@@ -23,12 +23,7 @@ const Conversation = (props) => {
     <div className={styles.root}>
       { props.conversation.isFetching && <Loader /> }
       { props.conversation &&
-        <Messenger
-          conversationId={props.conversation.id}
-          liveWelcome={(conversation) => {
-            return <LiveWelcome stripe={conversation.stripe} />
-          }}
-        />
+        <Live conversationId={props.conversation.id }/>
       }
       { props.conversation && <Details /> }
     </div>

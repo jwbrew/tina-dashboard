@@ -5,11 +5,7 @@ import Config from './Config';
 var api = restful(Config.API_ENDPOINT, fetchBackend(fetch));
 import { normalize } from 'normalizr';
 import {
-  client,
-  conversation,
-  conversations,
-  message,
-  messages
+  client
 } from './schema';
 
 const normalizeResponse = (scheme) => (response) => {
@@ -25,63 +21,6 @@ const normalizeResponse = (scheme) => (response) => {
 export default function(token) {
   if (token) {
     api.header('Authorization', 'Bearer ' + token);
-  }
-
-  api.endConversation = ({ public_key, id }) => {
-    return api.one('conversations', id)
-      .custom('end')
-      .post({ public_key }, 'end')
-      .then(normalizeResponse(conversation))
-  }
-
-  api.getMessages = ({ public_key, id }) => {
-    return api.all('messages')
-      .getAll({ public_key, conversation_id: id })
-      .then(normalizeResponse(messages))
-  }
-
-  api.sendMessage = (params, { public_key, id }) => {
-    return api.all('messages')
-      .post({ ...params, public_key, conversation_id: id })
-      .then(normalizeResponse(message))
-  }
-
-  api.getClient = (id) => {
-    return api.one('clients', id)
-      .get()
-      .then(normalizeResponse(client))
-  };
-
-  api.createConversation = (clientId) => {
-    return api.all('conversations')
-      .post({ clientId })
-      .then(normalizeResponse(conversation))
-  }
-
-  api.getConversations = () => {
-    return api.all('conversations')
-      .getAll()
-      .then(normalizeResponse(conversations))
-  }
-
-  api.getConversation = ({ id, public_key }) => {
-    return api.one('conversations', id)
-      .get({ public_key })
-      .then(normalizeResponse(conversation))
-  }
-
-  api.readConversation = ({ id, public_key, by }) => {
-    return api.one('conversations', id)
-      .custom('read')
-      .post({ id, public_key, by })
-      .then(normalizeResponse(conversation))
-  }
-
-  api.chargeConversation = ({ id, public_key }, amount) => {
-    return api.one('conversations', id)
-      .custom('charge')
-      .post({ public_key, amount })
-      .then(normalizeResponse(conversation))
   }
 
   api.savePicture = (file, { user_id }) => {
@@ -111,6 +50,16 @@ export default function(token) {
     })
   }
 
+  api.sendMessage = (name, message, client, session_id) => {
+    return api.all('live')
+      .post({
+        id: client.user_id,
+        name,
+        session_id,
+        message
+      })
+  }
+  
   api.subscribeClient = ({ user_id, user_metadata }, plan, token) => {
     return api.all('clients')
       .custom('subscribe')

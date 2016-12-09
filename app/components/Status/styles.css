@@ -1,0 +1,24 @@
+.root {
+  display: flex;
+  padding-right: 10px;
+}
+
+
+.picture {
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
+}
+
+.name {
+  display: block;
+  line-height: 30px;
+}
+
+.status {
+  color: green;
+  display: block;
+  font-size: 10px;
+  text-align: right;
+  line-height: 10px;
+}

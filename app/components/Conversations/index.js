@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import Component from './component';
-import { loadConversations } from '../../actions/conversations';
 import { getConversationsSorted } from '../../reducers';
 
 const mapStateToProps = (state, ownProps) => {
@@ -10,4 +9,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, { loadConversations })(Component);
+export default connect(mapStateToProps, {})(Component);

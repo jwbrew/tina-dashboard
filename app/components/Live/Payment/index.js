@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Component from './component';
-import { track } from '../../../../utils/Analytics';
-import { subscribe } from '../../../../actions/conversations';
-import { getActiveConversation } from '../../../../reducers';
+import { track } from '../../../utils/Analytics';
+import { subscribe } from '../../../actions/conversations';
+import { getActiveConversation } from '../../../reducers';
 
 let scriptLoading = false;
 let scriptLoaded = false;

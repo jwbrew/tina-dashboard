@@ -29,9 +29,10 @@
   margin-top: 20px;
 }
 
-.top img {
+.picture {
   margin-bottom: 2em;
   width: 40px;
+  border-radius: 5px;
 }
 
 .bottom {

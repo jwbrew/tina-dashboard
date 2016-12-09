@@ -4,7 +4,9 @@ import conversations, * as fromConversations from './conversations';
 import messages, * as fromMessages from './messages';
 import onboarding from './onboarding';
 import settings from './settings';
+import ui from './ui';
 import user, * as fromUser from './user';
+
 
 const hydration = (state={isHydrated: false}, action) => {
   if (action.type === 'persist/REHYDRATE') {
@@ -22,6 +24,7 @@ const appReducers = combineReducers({
   messages,
   onboarding,
   settings,
+  ui,
   user
 })
 
